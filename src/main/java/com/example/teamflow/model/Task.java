@@ -2,7 +2,8 @@ package com.example.teamflow.model;
 
 import java.time.LocalDateTime;
 
-import com.example.teamflow.enums.*;
+import com.example.teamflow.enums.TaskStatus;
+import com.example.teamflow.enums.Priority;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -14,7 +15,7 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+	@NotBlank
     private String title;
 
     @NotBlank
@@ -27,4 +28,30 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     private Priority priority;
+
+    public Task(
+        String title,
+        String description,
+        TaskStatus status,
+        LocalDateTime dueDate,
+        Priority priority
+    ) {
+        this.title = title;
+        this.description = description;
+        this.status = status;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+
+    public Long getId() {
+		return id;
+	}
+
+    public void update(Task task) {
+        this.title = task.title;
+        this.description = task.description;
+        this.status = task.status;
+        this.dueDate = task.dueDate;
+        this.priority = task.priority;
+    }
 }
