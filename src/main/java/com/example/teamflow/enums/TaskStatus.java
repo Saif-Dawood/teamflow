@@ -1,7 +1,7 @@
 package com.example.teamflow.enums;
 
 public enum TaskStatus {
-    TODO,
+    TO_DO,
     IN_PROGRESS,
     DONE
 }
