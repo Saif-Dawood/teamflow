@@ -8,14 +8,17 @@ import com.example.teamflow.enums.Priority;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
+import lombok.Data;
+
 @Entity
+@Data
 public class Task {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-	@NotBlank
+    @NotBlank
     private String title;
 
     @NotBlank
@@ -29,18 +32,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    public Task(
-        String title,
-        String description,
-        TaskStatus status,
-        LocalDateTime dueDate,
-        Priority priority
-    ) {
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.dueDate = dueDate;
-        this.priority = priority;
+    public Task() {
     }
 
     public Long getId() {
@@ -53,5 +45,14 @@ public class Task {
         this.status = task.status;
         this.dueDate = task.dueDate;
         this.priority = task.priority;
+    }
+
+    @Override
+    public String toString() {
+        return "title: " + this.title +
+            ", description: " + this.description +
+            ", status: " + this.status +
+            ", dueDate: " + this.dueDate +
+            ", priority: " + this.priority;
     }
 }
