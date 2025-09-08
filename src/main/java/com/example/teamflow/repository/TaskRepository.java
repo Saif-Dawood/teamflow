@@ -1,8 +1,9 @@
 package com.example.teamflow.repository;
 
 
-import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.teamflow.model.Task;
@@ -10,12 +11,12 @@ import com.example.teamflow.model.Task;
 
 public interface TaskRepository extends JpaRepository<Task, Integer> {
 
-    public List<Task> findAllByOrderByDueDateAsc();
+    public Page<Task> findAllByOrderByDueDateAsc(Pageable pageable);
 
-    public List<Task> findAllByOrderByDueDateDesc();
+    public Page<Task> findAllByOrderByDueDateDesc(Pageable pageable);
 
-    public List<Task> findAllByOrderByPriorityAsc();
+    public Page<Task> findAllByOrderByPriorityAsc(Pageable pageable);
 
-    public List<Task> findAllByOrderByPriorityDesc();
+    public Page<Task> findAllByOrderByPriorityDesc(Pageable pageable);
 
 }

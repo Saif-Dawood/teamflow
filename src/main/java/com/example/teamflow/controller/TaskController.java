@@ -1,7 +1,8 @@
 package com.example.teamflow.controller;
 
-import java.util.List;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import com.example.teamflow.model.Task;
 import com.example.teamflow.service.ITaskService;
@@ -17,10 +18,20 @@ public class TaskController {
     }
 
     @GetMapping("/tasks")
-    public List<Task> getTasks() {
+    public Page<Task> getTasks(
+        @RequestParam(required = false) String sortField,
+        @RequestParam(required = false) String order
+    ) {
 
         // get the tasks from db
-        List<Task> tasks = taskService.getAll();
+        Page<Task> tasks = null;
+        if (sortField != null){
+            tasks = taskService.getAll(sortField, Optional.ofNullable(order));
+        }
+
+        if (tasks == null) {
+            tasks = taskService.getAll();
+        }
 
         return tasks;
     }
@@ -33,8 +44,6 @@ public class TaskController {
 
     @PostMapping("/tasks")
     public Task addTask(@RequestBody Task task) {
-        System.out.println(task.toString());
-        System.out.println("qwerty");
         this.taskService.save(task);
         return task;
     }
