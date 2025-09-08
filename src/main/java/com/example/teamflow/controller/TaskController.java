@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.teamflow.enums.TaskStatus;
 import com.example.teamflow.model.Task;
 import com.example.teamflow.service.ITaskService;
 
@@ -19,14 +21,22 @@ public class TaskController {
 
     @GetMapping("/tasks")
     public Page<Task> getTasks(
-        @RequestParam(required = false) String sortField,
-        @RequestParam(required = false) String order
+        @RequestParam(required = false) String sort,
+        @RequestParam(required = false) String order,
+        @RequestParam(required = false) String title,
+        @RequestParam(required = false) String status
     ) {
 
-        // get the tasks from db
+        if (title != null) {
+            return taskService.findByTitle(title);
+        } else if (status != null) {
+            return taskService.findByStatus(TaskStatus.valueOf(status));
+        }
+
+
         Page<Task> tasks = null;
-        if (sortField != null){
-            tasks = taskService.getAll(sortField, Optional.ofNullable(order));
+        if (sort != null){
+            tasks = taskService.getAll(sort, Optional.ofNullable(order));
         }
 
         if (tasks == null) {

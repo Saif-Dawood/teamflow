@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.teamflow.model.Task;
 import com.example.teamflow.repository.TaskRepository;
+import com.example.teamflow.enums.TaskStatus;
 
 @Service
 public class TaskService implements ITaskService {
@@ -42,6 +43,14 @@ public class TaskService implements ITaskService {
         } else {
             return null;
         }
+    }
+
+    public Page<Task> findByTitle(String title) {
+        return this.repository.findAllByTitleIgnoreCaseContaining(title, this.pageable);
+    }
+
+    public Page<Task> findByStatus(TaskStatus status) {
+        return this.repository.findAllByStatus(status, this.pageable);
     }
 	
 	public Optional<Task> findById(int id) {
