@@ -23,19 +23,21 @@ public class TaskService implements ITaskService {
         this.repository = repository;
     }
     
-    public Page<Task> getAll() {
+    public Page<Task> getAll(int pageNumber) {
+        this.pageable = PageRequest.of(pageNumber, 5);
         return this.repository.findAll(this.pageable);
     }
 
-	public Page<Task> getAll(String sortField, Optional<String> order) {
-        if (sortField == "dueDate")  {
-            if (order.toString() == "desc") {
+	public Page<Task> getAll(String sortField, Optional<String> order, int pageNumber) {
+        this.pageable = PageRequest.of(pageNumber, 5);
+        if ("duedate".compareTo(sortField) == 0)  {
+            if ("desc".compareTo(order.get()) == 0) {
                 return this.repository.findAllByOrderByDueDateDesc(this.pageable);
             } else {
                 return this.repository.findAllByOrderByDueDateAsc(this.pageable);
             }
-        } else if (sortField == "Priority") {
-            if (order.toString() == "desc") {
+        } else if ("priority".compareTo(sortField) == 0) {
+            if ("desc".compareTo(order.get()) == 0) {
                 return this.repository.findAllByOrderByPriorityDesc(this.pageable);
             } else {
                 return this.repository.findAllByOrderByPriorityAsc(this.pageable);
@@ -45,11 +47,11 @@ public class TaskService implements ITaskService {
         }
     }
 
-    public Page<Task> findByTitle(String title) {
+    public Page<Task> findByTitle(String title, int pageNumber) {
         return this.repository.findAllByTitleIgnoreCaseContaining(title, this.pageable);
     }
 
-    public Page<Task> findByStatus(TaskStatus status) {
+    public Page<Task> findByStatus(TaskStatus status, int pageNumber) {
         return this.repository.findAllByStatus(status, this.pageable);
     }
 	

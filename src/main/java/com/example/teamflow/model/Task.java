@@ -35,10 +35,6 @@ public class Task {
     public Task() {
     }
 
-    public Long getId() {
-		return id;
-	}
-
     public void update(Task task) {
         this.title = task.title;
         this.description = task.description;

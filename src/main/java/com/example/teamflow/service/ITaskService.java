@@ -9,15 +9,15 @@ import com.example.teamflow.model.Task;
 
 public interface ITaskService {
 
-    Page<Task> getAll();
+    Page<Task> getAll(int pageNumber);
 
-	Page<Task> getAll(String sortField, Optional<String> order);
+	Page<Task> getAll(String sortField, Optional<String> order, int pageNumber);
 	
 	Optional<Task> findById(int theId);
 
-    Page<Task> findByTitle(String title);
+    Page<Task> findByTitle(String title, int pageNumber);
 
-    Page<Task> findByStatus(TaskStatus status);
+    Page<Task> findByStatus(TaskStatus status, int pageNumber);
 	
 	Task save(Task theTask);
 	

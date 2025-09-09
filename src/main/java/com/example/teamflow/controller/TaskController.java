@@ -24,23 +24,28 @@ public class TaskController {
         @RequestParam(required = false) String sort,
         @RequestParam(required = false) String order,
         @RequestParam(required = false) String title,
-        @RequestParam(required = false) String status
+        @RequestParam(required = false) String status,
+        @RequestParam(required = false) Integer page
     ) {
+        if (page == null) {
+            page = 0;
+        }
 
+        // Find and Sort don't work together, otherwise, everything should be fine
         if (title != null) {
-            return taskService.findByTitle(title);
+            return taskService.findByTitle(title, page);
         } else if (status != null) {
-            return taskService.findByStatus(TaskStatus.valueOf(status));
+            return taskService.findByStatus(TaskStatus.valueOf(status), page);
         }
 
 
         Page<Task> tasks = null;
         if (sort != null){
-            tasks = taskService.getAll(sort, Optional.ofNullable(order));
+            tasks = taskService.getAll(sort, Optional.ofNullable(order), page);
         }
 
         if (tasks == null) {
-            tasks = taskService.getAll();
+            tasks = taskService.getAll(page);
         }
 
         return tasks;
@@ -59,10 +64,11 @@ public class TaskController {
     }
 
     @PutMapping("/tasks/{id}")
-    public void updateTask(@PathVariable("id") int taskId, @RequestBody Task newTask) {
+    public Task updateTask(@PathVariable("id") int taskId, @RequestBody Task newTask) {
         Task task = this.taskService.findById(taskId).get();
         task.update(newTask);
         this.taskService.save(task);
+        return task;
     }
 
     @DeleteMapping("/tasks/{id}")
