@@ -9,8 +9,6 @@ import com.example.teamflow.model.Task;
 
 public interface ITaskService {
 
-    Page<Task> getAll(int pageNumber);
-
 	Page<Task> getAll(String sortField, Optional<String> order, int pageNumber);
 	
 	Optional<Task> findById(int theId);

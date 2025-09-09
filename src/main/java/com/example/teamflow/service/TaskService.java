@@ -23,13 +23,11 @@ public class TaskService implements ITaskService {
         this.repository = repository;
     }
     
-    public Page<Task> getAll(int pageNumber) {
-        this.pageable = PageRequest.of(pageNumber, 5);
-        return this.repository.findAll(this.pageable);
-    }
-
 	public Page<Task> getAll(String sortField, Optional<String> order, int pageNumber) {
         this.pageable = PageRequest.of(pageNumber, 5);
+        if (sortField == null) {
+            return this.repository.findAll(this.pageable);
+        }
         if ("duedate".compareTo(sortField) == 0)  {
             if ("desc".compareTo(order.get()) == 0) {
                 return this.repository.findAllByOrderByDueDateDesc(this.pageable);

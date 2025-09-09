@@ -40,13 +40,7 @@ public class TaskController {
 
 
         Page<Task> tasks = null;
-        if (sort != null){
-            tasks = taskService.getAll(sort, Optional.ofNullable(order), page);
-        }
-
-        if (tasks == null) {
-            tasks = taskService.getAll(page);
-        }
+        tasks = taskService.getAll(sort, Optional.ofNullable(order), page);
 
         return tasks;
     }
