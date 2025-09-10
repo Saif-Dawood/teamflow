@@ -11,7 +11,7 @@ public interface ITaskService {
 
 	Page<Task> getAll(String sortField, Optional<String> order, int pageNumber);
 	
-	Optional<Task> findById(int theId);
+	Task findById(int theId);
 
     Page<Task> findByTitle(String title, int pageNumber);
 

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.teamflow.enums.TaskStatus;
+import com.example.teamflow.exception.InvalidTaskStatusException;
 import com.example.teamflow.model.Task;
 import com.example.teamflow.service.ITaskService;
 
@@ -35,7 +36,11 @@ public class TaskController {
         if (title != null) {
             return taskService.findByTitle(title, page);
         } else if (status != null) {
-            return taskService.findByStatus(TaskStatus.valueOf(status), page);
+            try {
+                return taskService.findByStatus(TaskStatus.valueOf(status), page);
+            } catch (IllegalArgumentException exception) {
+                throw new InvalidTaskStatusException("The Task Status should be on of these values: TO_DO, IN_PROGRESS, DONE");
+            }
         }
 
 
@@ -47,8 +52,7 @@ public class TaskController {
 
     @GetMapping("/tasks/{id}")
     public Task getTask(@PathVariable("id") int taskId) {
-        Task task = this.taskService.findById(taskId).get();
-        return task;
+        return this.taskService.findById(taskId);
     }
 
     @PostMapping("/tasks")
@@ -59,7 +63,7 @@ public class TaskController {
 
     @PutMapping("/tasks/{id}")
     public Task updateTask(@PathVariable("id") int taskId, @RequestBody Task newTask) {
-        Task task = this.taskService.findById(taskId).get();
+        Task task = this.taskService.findById(taskId);
         task.update(newTask);
         this.taskService.save(task);
         return task;
